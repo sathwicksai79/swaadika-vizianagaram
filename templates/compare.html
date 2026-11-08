@@ -2,6 +2,23 @@
 {% block title %}Compare Restaurants · SWAADIKA{% endblock %}
 
 {% block content %}
+<style>
+@media (max-width: 640px) {
+  .compare-controls {
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .compare-controls select,
+  .compare-controls button {
+    width: 100% !important;
+  }
+  .compare-controls .vs {
+    margin: 2px 0 !important;
+  }
+}
+</style>
+
 <section class="compare-head">
   <div class="eyebrow dark">SWAADIKA COMPARISON</div>
   <h1>Compare two restaurants.</h1>
@@ -53,11 +70,11 @@ function comparisonTable(a, b, predA, predB) {
   const ratingB = (b.rating !== null && b.rating !== undefined && !isNaN(b.rating)) ? '★ ' + b.rating : '—';
 
   return `
-    <div style="margin-top: 28px; background: #ffffff; border-radius: 16px; border: 1px solid #e5e0d3; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+    <div style="margin-top: 28px; background: #ffffff; border-radius: 16px; border: 1px solid #e5e0d3; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow-x: auto; -webkit-overflow-scrolling: touch;">
       <div style="font-size: 12px; font-weight: 700; color: #8a6a2a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;">
         Quick Comparison
       </div>
-      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 15px;">
+      <table style="width: 100%; min-width: 520px; border-collapse: collapse; text-align: left; font-size: 15px;">
         <thead>
           <tr style="border-bottom: 2px solid #0a382c;">
             <th style="padding: 12px 10px; color: #64748b; font-weight: 600; width: 22%;">Feature</th>
