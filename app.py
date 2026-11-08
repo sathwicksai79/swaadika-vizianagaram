@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, abort, redirect, url_for
+from flask import Flask, render_template, jsonify, request, abort, redirect, url_for, Response
 import os
 import re
 import json
@@ -39,7 +39,6 @@ def normalize_restaurant_name(text):
     """Normalizes restaurant names by handling quotes, lowercase, and symbols."""
     if not text:
         return ""
-    # Convert curly quotes to straight, lowercase, remove punctuation and spaces
     cleaned = str(text).lower().replace("’", "'").replace("`", "'")
     return re.sub(r"[^a-z0-9]", "", cleaned)
 
@@ -328,7 +327,6 @@ def shop_details(category, shop_id):
         except Exception:
             app.logger.exception("Automatic prediction failed for %s", category)
 
-    # Load digital menu only for restaurants
     menu_data = None
     if category == "restaurants":
         menu_data = get_restaurant_menu(shop.get("name"))
@@ -440,6 +438,50 @@ def model_status():
         }
         for category in CATEGORY_INFO
     })
+
+# ==================================================
+# SEO SEARCH ENGINE CRAWLER ROUTES (SITEMAP & ROBOTS)
+# ==================================================
+
+@app.route("/robots.txt")
+def robots():
+    robots_text = """User-agent: *
+Allow: /
+
+Sitemap: https://swaadika-vizianagaram.onrender.com/sitemap.xml
+"""
+    return Response(robots_text, mimetype="text/plain")
+
+@app.route("/sitemap.xml")
+def sitemap():
+    sitemap_xml = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://swaadika-vizianagaram.onrender.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://swaadika-vizianagaram.onrender.com/explore</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swaadika-vizianagaram.onrender.com/compare</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swaadika-vizianagaram.onrender.com/category/restaurants</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swaadika-vizianagaram.onrender.com/category/tiffins</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swaadika-vizianagaram.onrender.com/category/snacks</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>"""
+    return Response(sitemap_xml, mimetype="application/xml")
 
 @app.errorhandler(404)
 def not_found(_error):
