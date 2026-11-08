@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Predict Rating · {{ restaurant.name }} · SATTVA{% endblock %}
+{% block content %}
+<section class="prediction-page">
+  <a class="back-link" href="{{ url_for('shop_details', category=category_key, shop_id=restaurant.id) }}">← Back to Shop Details</a>
+  <div class="prediction-layout">
+    <div class="prediction-summary">
+      <div class="eyebrow dark">SATTVA MACHINE LEARNING</div>
+      <h1>Predict the rating.</h1>
+      <p>Shop: <strong>{{ restaurant.name }}</strong></p>
+      <p class="muted">{{ restaurant.cuisines }}</p>
+      {% if restaurant.image and category_key == 'restaurants' %}
+      <img class="prediction-thumb" src="{{ url_for('static', filename='images/' + restaurant.image) }}" alt="{{ restaurant.name }}">
+      {% endif %}
+      <div class="prediction-disclaimer">This is a machine-learning estimate, not a guaranteed customer rating or a promise of future experience.</div>
+    </div>
+    <div class="prediction-form-card">
+      {% if not model_available %}
+      <div class="empty-state compact"><h2>Model not available yet</h2><p>{{ error or 'SATTVA needs enough verified, category-specific training data before it can make a meaningful prediction for this category.' }}</p></div>
+      {% else %}
+      <h2>Prediction inputs</h2>
+      <p class="muted">Values are prefilled from the existing dataset where available. You can adjust price and review count; other features use this shop's saved data.</p>
+      {% if error %}<div class="form-error" role="alert">{{ error }}</div>{% endif %}
+      <form method="post" class="prediction-form">
+        <label for="price_for_two">Price for two (₹)</label>
+        <input id="price_for_two" name="price_for_two" type="number" min="0" max="100000" step="1" value="{{ request.form.get('price_for_two', restaurant.price if restaurant.price is not none else '') }}" placeholder="Enter price if known">
+        <label for="reviews">Number of reviews</label>
+        <input id="reviews" name="reviews" type="number" min="0" max="100000000" step="1" value="{{ request.form.get('reviews', restaurant.reviews if restaurant.reviews is not none else '') }}" placeholder="Enter review count if known">
+        <button type="submit" class="primary-btn">Generate Prediction <span>→</span></button>
+      </form>
+      {% if result %}
+      <section class="prediction-result" aria-live="polite">
+        <div class="prediction-label">MACHINE-LEARNING PREDICTED RATING</div>
+        <div class="prediction-number">{{ result.predicted_rating }}<small>/ 5</small></div>
+        <p>Generated using {{ result.model_name }} with the existing model.</p>
+        <p class="muted">Current dataset rating: {{ result.current_rating if result.current_rating is not none else 'Not available' }}</p>
+        <div class="result-dishes"><strong>Food type</strong><p>{{ restaurant.cuisines }}</p></div>
+        {% if restaurant.veg_dishes %}<div class="result-dishes"><strong>Famous vegetarian dishes</strong><p>{{ restaurant.veg_dishes }}</p></div>{% endif %}
+        {% if restaurant.nonveg_dishes %}<div class="result-dishes"><strong>Famous non-vegetarian dishes</strong><p>{{ restaurant.nonveg_dishes }}</p></div>{% endif %}
+        {% if restaurant.delivery is not none %}<div class="result-dishes"><strong>Delivery</strong><p>{{ 'Available' if restaurant.delivery else 'Not available' }}</p></div>{% endif %}
+        <a class="text-link" href="{{ url_for('shop_details', category=category_key, shop_id=restaurant.id) }}">← Back to Shop Details</a>
+        <button class="secondary-btn" type="button" onclick="window.location.href='{{ url_for('predict_page', category=category_key, shop_id=restaurant.id) }}'">Predict Again</button>
+      </section>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

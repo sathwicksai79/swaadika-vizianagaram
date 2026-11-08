@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Explore Food Categories · SWAADIKA{% endblock %}
+
+{% block content %}
+<div class="explore-container" style="max-width: 1200px; margin: 0 auto; padding: 40px 24px;">
+
+  <!-- TOP BACK LINK -->
+  <div style="margin-bottom: 20px;">
+    <a href="/" style="color: #64748b; font-size: 13.5px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='#073b30'" onmouseout="this.style.color='#64748b'">
+      <span>←</span> Home
+    </a>
+  </div>
+
+  <!-- HEADER SECTION -->
+  <div class="explore-header" style="margin-bottom: 40px;">
+    <span style="font-size: 11.5px; font-weight: 800; letter-spacing: 0.16em; color: #9c7220; text-transform: uppercase; display: inline-block; margin-bottom: 8px;">
+      EXPLORE
+    </span>
+    <h1 style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.85rem; color: #073b30; font-weight: 700; line-height: 1.2; margin: 0 0 12px 0;">
+      Can't decide what to eat?
+    </h1>
+    <p style="font-size: 16px; color: #556961; margin: 0; line-height: 1.6; max-width: 680px;">
+      Explore spots across Vizianagaram — <strong style="color: #073b30; font-weight: 700;">SWAADIKA</strong> will handle the rest.
+    </p>
+  </div>
+
+  <!-- CATEGORIES GRID -->
+  <div class="categories-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+
+    <!-- RESTAURANTS CARD -->
+    <div class="category-card" style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #e7dcce; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 16px 36px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.04)';">
+      <a href="/category/restaurants" style="display: block; width: 100%; height: 210px; overflow: hidden; background: #073b30;">
+        <img src="{{ url_for('static', filename='images/categories/cat_restaurants.png') }}" 
+             alt="Restaurants" 
+             style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease;"
+             onmouseover="this.style.transform='scale(1.05)'"
+             onmouseout="this.style.transform='scale(1)'">
+      </a>
+      <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: #9c7220; text-transform: uppercase; margin-bottom: 6px;">
+          DINING & MULTI-CUISINE
+        </span>
+        <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; color: #073b30; font-weight: 700; margin: 0 0 10px 0;">
+          Restaurants
+        </h2>
+        <p style="font-size: 14.5px; color: #64748b; line-height: 1.6; margin: 0 0 20px 0; flex-grow: 1;">
+          Family dining, biryani centers, and multi-cuisine restaurants across Vizianagaram.
+        </p>
+        <div>
+          <a href="/category/restaurants" style="background: #073b30; color: #ffffff; font-weight: 700; font-size: 14px; padding: 11px 22px; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;" onmouseover="this.style.background='#0c4e40'" onmouseout="this.style.background='#073b30'">
+            View Shops <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIFFINS CARD -->
+    <div class="category-card" style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #e7dcce; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 16px 36px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.04)';">
+      <a href="/category/tiffins" style="display: block; width: 100%; height: 210px; overflow: hidden; background: #073b30;">
+        <img src="{{ url_for('static', filename='images/categories/cat_tiffins.png') }}" 
+             alt="Tiffins" 
+             style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease;"
+             onmouseover="this.style.transform='scale(1.05)'"
+             onmouseout="this.style.transform='scale(1)'">
+      </a>
+      <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: #9c7220; text-transform: uppercase; margin-bottom: 6px;">
+          BREAKFAST & MORNING SPECIALS
+        </span>
+        <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; color: #073b30; font-weight: 700; margin: 0 0 10px 0;">
+          Tiffins
+        </h2>
+        <p style="font-size: 14.5px; color: #64748b; line-height: 1.6; margin: 0 0 20px 0; flex-grow: 1;">
+          Fresh South Indian breakfast, tiffin centers, and daily morning meals.
+        </p>
+        <div>
+          <a href="/category/tiffins" style="background: #073b30; color: #ffffff; font-weight: 700; font-size: 14px; padding: 11px 22px; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;" onmouseover="this.style.background='#0c4e40'" onmouseout="this.style.background='#073b30'">
+            View Shops <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENING SNACKS CARD -->
+    <div class="category-card" style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #e7dcce; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 16px 36px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.04)';">
+      <a href="/category/snacks" style="display: block; width: 100%; height: 210px; overflow: hidden; background: #073b30;">
+        <img src="{{ url_for('static', filename='images/categories/cat_snacks.png') }}" 
+             alt="Evening Snacks" 
+             style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease;"
+             onmouseover="this.style.transform='scale(1.05)'"
+             onmouseout="this.style.transform='scale(1)'">
+      </a>
+      <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: #9c7220; text-transform: uppercase; margin-bottom: 6px;">
+          EVENING BITES & QUICK EATS
+        </span>
+        <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; color: #073b30; font-weight: 700; margin: 0 0 10px 0;">
+          Evening Snacks
+        </h2>
+        <p style="font-size: 14.5px; color: #64748b; line-height: 1.6; margin: 0 0 20px 0; flex-grow: 1;">
+          Local chaat, fast food, and popular evening refreshment spots.
+        </p>
+        <div>
+          <a href="/category/snacks" style="background: #073b30; color: #ffffff; font-weight: 700; font-size: 14px; padding: 11px 22px; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;" onmouseover="this.style.background='#0c4e40'" onmouseout="this.style.background='#073b30'">
+            View Shops <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

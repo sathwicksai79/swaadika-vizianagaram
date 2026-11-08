@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}Compare Restaurants · SATTVA{% endblock %}
+
+{% block content %}
+<section class="compare-head">
+  <div class="eyebrow dark">SATTVA COMPARISON</div>
+  <h1>Compare two restaurants.</h1>
+  <p>Select any two restaurants to see what is available side by side.</p>
+
+  <div class="compare-controls">
+    <select id="restaurantA">
+      <option value="">Restaurant 1</option>
+      {% for r in restaurants %}<option value="{{ r.id }}">{{ r.name }}</option>{% endfor %}
+    </select>
+    <div class="vs">VS</div>
+    <select id="restaurantB">
+      <option value="">Restaurant 2</option>
+      {% for r in restaurants %}<option value="{{ r.id }}">{{ r.name }}</option>{% endfor %}
+    </select>
+    <button id="compareBtn" class="primary-btn">Compare <span>→</span></button>
+  </div>
+</section>
+
+<section class="comparison-section">
+  <div id="result" class="comparison-container" style="max-width: 900px; margin: 0 auto; width: 100%;"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const restaurants = {{ restaurants|tojson }};
+const aSelect = document.getElementById('restaurantA');
+const bSelect = document.getElementById('restaurantB');
+const compareBtn = document.getElementById('compareBtn');
+const result = document.getElementById('result');
+
+const params = new URLSearchParams(location.search);
+if (params.get('first')) aSelect.value = params.get('first');
+
+function esc(value) {
+  return String(value ?? '—')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;');
+}
+
+function comparisonTable(a, b, predA, predB) {
+  const priceA = a.price_text ? esc(a.price_text) : (a.price ? '₹' + Math.round(Number(a.price)) : '—');
+  const priceB = b.price_text ? esc(b.price_text) : (b.price ? '₹' + Math.round(Number(b.price)) : '—');
+  
+  const ratingA = (a.rating !== null && a.rating !== undefined && !isNaN(a.rating)) ? '★ ' + a.rating : '—';
+  const ratingB = (b.rating !== null && b.rating !== undefined && !isNaN(b.rating)) ? '★ ' + b.rating : '—';
+
+  return `
+    <div style="margin-top: 28px; background: #ffffff; border-radius: 16px; border: 1px solid #e5e0d3; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+      <div style="font-size: 12px; font-weight: 700; color: #8a6a2a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;">
+        Quick Comparison
+      </div>
+      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 15px;">
+        <thead>
+          <tr style="border-bottom: 2px solid #0a382c;">
+            <th style="padding: 12px 10px; color: #64748b; font-weight: 600; width: 22%;">Feature</th>
+            <th style="padding: 12px 10px; color: #0a382c; font-size: 18px; width: 39%;">${esc(a.name)}</th>
+            <th style="padding: 12px 10px; color: #0a382c; font-size: 18px; width: 39%;">${esc(b.name)}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #f1ece1;">
+            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Cuisines</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${esc(a.cuisines)}</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${esc(b.cuisines)}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f1ece1;">
+            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Current Rating</td>
+            <td style="padding: 14px 10px; font-weight: 700; color: #0a382c;">${ratingA}</td>
+            <td style="padding: 14px 10px; font-weight: 700; color: #0a382c;">${ratingB}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f1ece1; background-color: #fbf9f4;">
+            <td style="padding: 14px 10px; font-weight: 700; color: #8a6a2a;">SATTVA Rating</td>
+            <td style="padding: 14px 10px; font-size: 17px; font-weight: 700; color: #1b5e43;">★ ${predA}</td>
+            <td style="padding: 14px 10px; font-size: 17px; font-weight: 700; color: #1b5e43;">★ ${predB}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f1ece1;">
+            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Price for Two</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${priceA}</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${priceB}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f1ece1;">
+            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Popular Veg Dishes</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${esc(a.veg_dishes || '—')}</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${esc(b.veg_dishes || '—')}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f1ece1;">
+            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Popular Non-Veg Dishes</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${esc(a.nonveg_dishes || '—')}</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${esc(b.nonveg_dishes || '—')}</td>
+          </tr>
+          <tr>
+            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Delivery</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${a.delivery !== null && a.delivery !== undefined ? (a.delivery ? 'Available' : 'Not available') : 'Available'}</td>
+            <td style="padding: 14px 10px; color: #1e293b;">${b.delivery !== null && b.delivery !== undefined ? (b.delivery ? 'Available' : 'Not available') : 'Available'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`;
+}
+
+compareBtn.addEventListener('click', async () => {
+  if (!aSelect.value || !bSelect.value || aSelect.value === bSelect.value) {
+    alert('Please select two different restaurants.');
+    return;
+  }
+
+  const a = restaurants.find(r => r.id == aSelect.value);
+  const b = restaurants.find(r => r.id == bSelect.value);
+
+  if (!a || !b) {
+    alert('Invalid restaurant selection.');
+    return;
+  }
+
+  compareBtn.disabled = true;
+  compareBtn.innerHTML = 'Comparing…';
+  result.innerHTML = '<div class="loading" style="text-align: center; padding: 30px; font-weight: 600; color: #475569;">Generating predictions…</div>';
+
+  try {
+    const [pa, pb] = await Promise.all([
+      fetch('/api/predict/' + a.id).then(r => r.json()),
+      fetch('/api/predict/' + b.id).then(r => r.json())
+    ]);
+
+    if (!pa.success || !pb.success) throw new Error('Prediction API call failed');
+
+    result.innerHTML = comparisonTable(a, b, pa.predicted_rating, pb.predicted_rating);
+
+  } catch (e) {
+    console.error(e);
+    result.innerHTML = '<div class="loading" style="text-align: center; padding: 24px; color: #dc2626;">Something went wrong while comparing. Please try again.</div>';
+  } finally {
+    compareBtn.disabled = false;
+    compareBtn.innerHTML = 'Compare <span>→</span>';
+  }
+});
+</script>
+{% endblock %}
