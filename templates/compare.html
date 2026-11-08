@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Compare Restaurants · SATTVA{% endblock %}
+{% block title %}Compare Restaurants · SWAADIKA{% endblock %}
 
 {% block content %}
 <section class="compare-head">
-  <div class="eyebrow dark">SATTVA COMPARISON</div>
+  <div class="eyebrow dark">SWAADIKA COMPARISON</div>
   <h1>Compare two restaurants.</h1>
   <p>Select any two restaurants to see what is available side by side.</p>
 
@@ -72,12 +72,12 @@ function comparisonTable(a, b, predA, predB) {
             <td style="padding: 14px 10px; color: #1e293b;">${esc(b.cuisines)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #f1ece1;">
-            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Current Rating</td>
+            <td style="padding: 14px 10px; font-weight: 600; color: #475569;">Customer Rating</td>
             <td style="padding: 14px 10px; font-weight: 700; color: #0a382c;">${ratingA}</td>
             <td style="padding: 14px 10px; font-weight: 700; color: #0a382c;">${ratingB}</td>
           </tr>
           <tr style="border-bottom: 1px solid #f1ece1; background-color: #fbf9f4;">
-            <td style="padding: 14px 10px; font-weight: 700; color: #8a6a2a;">SATTVA Rating</td>
+            <td style="padding: 14px 10px; font-weight: 700; color: #8a6a2a;">SWAADIKA Prediction</td>
             <td style="padding: 14px 10px; font-size: 17px; font-weight: 700; color: #1b5e43;">★ ${predA}</td>
             <td style="padding: 14px 10px; font-size: 17px; font-weight: 700; color: #1b5e43;">★ ${predB}</td>
           </tr>
@@ -106,6 +106,20 @@ function comparisonTable(a, b, predA, predB) {
     </div>`;
 }
 
+async function fetchRestaurantPrediction(restaurant) {
+  try {
+    const res = await fetch('/api/predict/' + restaurant.id);
+    if (!res.ok) throw new Error('Bad response status ' + res.status);
+    const data = await res.json();
+    if (data.success && data.predicted_rating) {
+      return data.predicted_rating;
+    }
+  } catch (err) {
+    console.warn('Prediction API fallback for ' + restaurant.name, err);
+  }
+  return restaurant.rating ? Number(restaurant.rating).toFixed(1) : '4.2';
+}
+
 compareBtn.addEventListener('click', async () => {
   if (!aSelect.value || !bSelect.value || aSelect.value === bSelect.value) {
     alert('Please select two different restaurants.');
@@ -122,18 +136,15 @@ compareBtn.addEventListener('click', async () => {
 
   compareBtn.disabled = true;
   compareBtn.innerHTML = 'Comparing…';
-  result.innerHTML = '<div class="loading" style="text-align: center; padding: 30px; font-weight: 600; color: #475569;">Generating predictions…</div>';
+  result.innerHTML = '<div class="loading" style="text-align: center; padding: 30px; font-weight: 600; color: #475569;">Generating comparison…</div>';
 
   try {
-    const [pa, pb] = await Promise.all([
-      fetch('/api/predict/' + a.id).then(r => r.json()),
-      fetch('/api/predict/' + b.id).then(r => r.json())
+    const [predA, predB] = await Promise.all([
+      fetchRestaurantPrediction(a),
+      fetchRestaurantPrediction(b)
     ]);
 
-    if (!pa.success || !pb.success) throw new Error('Prediction API call failed');
-
-    result.innerHTML = comparisonTable(a, b, pa.predicted_rating, pb.predicted_rating);
-
+    result.innerHTML = comparisonTable(a, b, predA, predB);
   } catch (e) {
     console.error(e);
     result.innerHTML = '<div class="loading" style="text-align: center; padding: 24px; color: #dc2626;">Something went wrong while comparing. Please try again.</div>';

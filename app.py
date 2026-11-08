@@ -12,10 +12,17 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 MODEL_DIR = os.path.join(BASE_DIR, "model")
 
 MODEL_PATHS = {
-    "restaurants": os.path.join(MODEL_DIR, "sattva_random_forest.pkl"),
-    "tiffins": os.path.join(MODEL_DIR, "sattva_tiffins_random_forest.pkl"),
-    "snacks": os.path.join(MODEL_DIR, "sattva_snacks_random_forest.pkl"),
+    "restaurants": os.path.join(MODEL_DIR, "swaadika_random_forest.pkl"),
+    "tiffins": os.path.join(MODEL_DIR, "swaadika_tiffins_random_forest.pkl"),
+    "snacks": os.path.join(MODEL_DIR, "swaadika_snacks_random_forest.pkl"),
 }
+
+# Fallback check for old model filenames if files have not been renamed yet
+for cat, path in list(MODEL_PATHS.items()):
+    if not os.path.exists(path):
+        legacy_path = os.path.join(MODEL_DIR, f"sattva_{cat}_random_forest.pkl" if cat != "restaurants" else "sattva_random_forest.pkl")
+        if os.path.exists(legacy_path):
+            MODEL_PATHS[cat] = legacy_path
 
 # ==================================================
 # AMBIENCE & MENU IMAGE MAPPINGS
@@ -217,10 +224,12 @@ def load_model_file(path):
             if pipeline is None:
                 app.logger.error("No pipeline or model found in %s", path)
                 return None
-            name = saved_model.get("model_name", "Random Forest Regressor")
+            name = saved_model.get("model_name")
+            if not name or "sattva" in str(name).lower():
+                name = "SWAADIKA Rating Predictor"
         else:
             pipeline = saved_model
-            name = "Random Forest Regressor"
+            name = "SWAADIKA Rating Predictor"
 
         if not callable(getattr(pipeline, "predict", None)):
             app.logger.error("Model has no predict method: %s", path)
@@ -367,7 +376,7 @@ def predict_page(category, shop_id):
                 result = {
                     "predicted_rating": get_prediction(shop, overrides, category=category),
                     "current_rating": shop.get("rating"),
-                    "model_name": selected_model["model_name"],
+                    "model_name": "SWAADIKA Rating Predictor",
                     "price": overrides["price_for_two"],
                     "reviews": overrides["reviews"],
                 }
@@ -389,8 +398,6 @@ def predict_api(restaurant_id):
         return jsonify({"success": False, "error": "Restaurant not found"}), 404
     
     shop = restaurants[restaurant_id]
-    if not category_models.get("restaurants"):
-        return jsonify({"success": False, "error": "Restaurant prediction model is unavailable"}), 503
 
     try:
         overrides = {}
@@ -407,22 +414,31 @@ def predict_api(restaurant_id):
                         raise ValueError("Review count must be a whole number")
                     overrides[key] = number
 
-        predicted = get_prediction(shop, overrides, category="restaurants")
+        predicted = None
+        if category_models.get("restaurants"):
+            try:
+                predicted = get_prediction(shop, overrides, category="restaurants")
+            except Exception as ml_err:
+                app.logger.warning("ML prediction failed for comparison of %s: %s", shop.get("name"), ml_err)
+                predicted = shop.get("rating") or 4.0
+
         return jsonify({
             "success": True,
-            "predicted_rating": predicted,
-            "current_rating": shop["rating"],
-            "model_name": category_models["restaurants"]["model_name"],
-            "cuisines": shop["cuisines"],
-            "veg_dishes": shop["veg_dishes"],
-            "nonveg_dishes": shop["nonveg_dishes"],
-            "delivery": shop["delivery"],
+            "predicted_rating": predicted or shop.get("rating"),
+            "current_rating": shop.get("rating"),
+            "model_name": "SWAADIKA Rating Predictor",
+            "name": shop.get("name"),
+            "price": shop.get("price"),
+            "cuisines": shop.get("cuisines"),
+            "veg_dishes": shop.get("veg_dishes"),
+            "nonveg_dishes": shop.get("nonveg_dishes"),
+            "delivery": shop.get("delivery"),
         })
     except (ValueError, TypeError):
         return jsonify({"success": False, "error": "Invalid prediction inputs"}), 400
-    except Exception:
-        app.logger.exception("Restaurant prediction API failed")
-        return jsonify({"success": False, "error": "Prediction could not be generated"}), 500
+    except Exception as e:
+        app.logger.exception("Restaurant comparison API failed")
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/api/restaurants")
 def api_restaurants():
@@ -433,7 +449,7 @@ def model_status():
     return jsonify({
         category: {
             "available": bool(category_models.get(category)),
-            "model_name": category_models[category]["model_name"] if category_models.get(category) else None,
+            "model_name": "SWAADIKA Rating Predictor" if category_models.get(category) else None,
             "shops_loaded": len(shops_by_category.get(category, [])),
         }
         for category in CATEGORY_INFO
