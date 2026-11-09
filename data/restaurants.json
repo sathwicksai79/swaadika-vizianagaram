@@ -1,6 +1,7 @@
 [
- {
+  {
     "name": "Happy Restaurant",
+    "category": "restaurants",
     "cuisines": "North Indian",
     "address": "Ranjani theater road, opp-TTD Kalyanamandapam, Ayodya Maidanam Area, Jonnaguddi Area, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 700,
@@ -13,6 +14,7 @@
   },
   {
     "name": "Biryani’s and more",
+    "category": "restaurants",
     "cuisines": "North Indian, Andhra, South India, Mughalai",
     "address": "100 Ft Ring Rd, opp. Bhyrayam School, Bhagawan Nagar, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 600,
@@ -25,6 +27,7 @@
   },
   {
     "name": "Platform 65",
+    "category": "restaurants",
     "cuisines": "Multi cuisine, chines",
     "address": "3rd Floor, Balaji Junction, above Reliance Smart, Jonnaguddi Area, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 800,
@@ -37,6 +40,7 @@
   },
   {
     "name": "The Northern circars",
+    "category": "restaurants",
     "cuisines": "North Indian",
     "address": "Fort City Centre Mall, Railway Station Rd, Gadi Khana, Pedavemali, Vizianagaram, Andhra Pradesh 535003",
     "price_for_two": 950.0,
@@ -49,6 +53,7 @@
   },
   {
     "name": "Mandi croods",
+    "category": "restaurants",
     "cuisines": "Arabic",
     "address": "18-2-10 Raja Bazar, beside DCCB Bank, Ambati Satram Area, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 700.0,
@@ -61,6 +66,7 @@
   },
   {
     "name": "Hayat Multicuisine Restaurent",
+    "category": "restaurants",
     "cuisines": "Multi cuisine",
     "address": "Ring Road, Dasannapet, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 450.0,
@@ -73,6 +79,7 @@
   },
   {
     "name": "Four Corners",
+    "category": "restaurants",
     "cuisines": "North Indian",
     "address": "207, 100 Ft Ring Rd, opposite SUN School, MSN Colony, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 400.0,
@@ -85,6 +92,7 @@
   },
   {
     "name": "Food o clock Restaurant",
+    "category": "restaurants",
     "cuisines": "Chinese, Mughalai, Andhra, North India",
     "address": "100 Ft Ring Rd, beside Varun Motors, MSN Colony, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 350.0,
@@ -97,6 +105,7 @@
   },
   {
     "name": "Sri annapurna Restaurant",
+    "category": "restaurants",
     "cuisines": "North Indian, Chinese",
     "address": "Hanuman Nagar, Phool Bagh Colony, Phool Bagh, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 200.5,
@@ -109,6 +118,7 @@
   },
   {
     "name": "Mogalthuru Vaari Ruchulu",
+    "category": "restaurants",
     "cuisines": "Chinese, Mughalai, Biriyanis",
     "address": "P.R. Colony, 20-20-1b, behind Puvvada School, Shirdi Sai Nagar, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 850.0,
@@ -121,6 +131,7 @@
   },
   {
     "name": "Gowrav Family Restaurant",
+    "category": "restaurants",
     "cuisines": "Andhra",
     "address": "Ice factory junction, Dharmapuri Rd, opposite Medplus, Sriram Nagar Colony, Shirdi Sai Nagar, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 400.0,
@@ -133,6 +144,7 @@
   },
   {
     "name": "Aroma Restaurant",
+    "category": "restaurants",
     "cuisines": "Chinese, Biryani, Mughlai",
     "address": "Near Gayatri petrol bunk, Babametta, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 500,
@@ -145,6 +157,7 @@
   },
   {
     "name": "Sunny Restaurant",
+    "category": "restaurants",
     "cuisines": "Seafood, North indian, Mughlai",
     "address": "MIG-229, Babametta, Vizianagaram, Andhra Pradesh 535002",
     "price_for_two": 350.0,
@@ -157,6 +170,7 @@
   },
   {
     "name": "Multi Kitchen",
+    "category": "restaurants",
     "cuisines": "Indian, chinese, tandoori",
     "address": "Cantonment Main Rd, Vivekananda Colony, Alakananda Colony, Vizianagaram, Andhra Pradesh 535003",
     "price_for_two": 400.0,
@@ -183,23 +197,33 @@
   },
   {
     "name": "EAT IN THE STREET",
+    "category": "restaurants",
     "cuisines": "Biryani, North Indian, Chinese, Fast Food",
-    "price_range": "₹600 for two",
-    "price": 600,
-    "rating": 4.0,
     "address": "Plot 72 And 73, Krishnarajupuram Layout, Ring Road, Opposite Bank Of Baroda, Vizianagaram Locality, Vizianagaram",
-    "image": "eat_in_the_street.jpeg"
+    "price_range": "₹600 for two",
+    "price_for_two": 600,
+    "rating": 4.0,
+    "reviews": 120,
+    "veg_dishes": "Veg Fried Rice, Paneer Manchurian, Crispy Corn, Veg Noodles",
+    "nonveg_dishes": "Chicken Dum Biryani, Chicken Fried Rice, Chilli Chicken, Chicken 65",
+    "image": "eat_in_the_street.jpeg",
+    "delivery": true
   },
-{
+  {
     "name": "Rayudu Garu Ruchulu",
+    "category": "restaurants",
     "cuisines": "South Indian (Andhra Style), North Indian, Mughlai",
-    "price_range": "₹1000 for two",
-    "price": 1000,
-    "rating": 4.2,
     "address": "Lower Tank Road, opposite B-New Cell Point, near RTC Complex, Siddharth Nagar, Balaji Nagar, Vizianagaram, Andhra Pradesh 535003",
-    "image": "rayudu_garu_ruchulu.jpeg"
+    "price_range": "₹1000 for two",
+    "price_for_two": 1000,
+    "rating": 4.2,
+    "reviews": 210,
+    "veg_dishes": "Andhra Veg Thali, Paneer Butter Masala, Mushroom Curry, Veg Pulao",
+    "nonveg_dishes": "Rayudu Garu Special Biryani, Natu Kodi Biryani, Mutton Fry, Prawns Iguru",
+    "image": "rayudu_garu_ruchulu.jpeg",
+    "delivery": true
   },
- {
+  {
     "name": "Rasoi Ghar",
     "category": "restaurants",
     "cuisines": "North Indian, Biryani, Mughlai, Tandoori",
@@ -229,51 +253,59 @@
   },
   {
     "name": "Bhale Manchi Roju",
+    "category": "restaurants",
     "cuisines": "Andhra, Biryani, South Indian",
-    "price_range": "₹300 for two",
-    "price": 300,
-    "rating": 4.3,
     "address": "MG Rd, SKP Temple Area, Santha Pet, Vizianagaram, Andhra Pradesh 535001",
-    "image": "bhale_manchi_roju.jpeg"
+    "price_range": "₹300 for two",
+    "price_for_two": 300,
+    "rating": 4.3,
+    "reviews": 180,
+    "veg_dishes": "South Indian Veg Meals, Sambar Rice, Curd Rice, Veg Biryani",
+    "nonveg_dishes": "Chicken Fry Piece Biryani, Mutton Curry Meals, Andhra Chicken Curry",
+    "image": "bhale_manchi_roju.jpeg",
+    "delivery": true
   },
   {
-  "name": "Blue Moon Restaurant",
-  "cuisines": "North Indian, Biryani, Chinese, Seafood",
-  "address": "Door 182/1 12-15-1, Nellimarla Village, Poolbagh Road, Vizianagaram Locality, Vizianagaram, Andhra Pradesh 535002",
-  "price_for_two": 600,
-  "rating": 4.1,
-  "reviews": 320,
-  "veg_dishes": "Paneer Butter Masala, Veg Fried Rice, Mushroom Masala, Baby Corn Manchurian, Dal Tadka",
-  "nonveg_dishes": "Special Chicken Biryani, Apollo Fish, Prawns Fry, Chicken 65, Mutton Curry",
-  "image": "bluemoon.jpeg",
-  "delivery": true
-},
-{
-  "name": "90s Mandi Villa",
-  "cuisines": "Arabian Mandi, Biryani, North Indian",
-  "price_range": "₹200–1,100",
-  "price_for_two": 600,
-  "rating": 4.0,
-  "reviews": 369,
-  "famous_dishes": "Chicken Juicy Mandi, Mutton Juicy Mandi, Fish Tawa, White Pasta, Paneer 65 Mandi",
-  "veg_dishes": "Paneer 65, Veg Mandi, White Pasta, Crispy Corn",
-  "non_veg_dishes": "Chicken Juicy Mandi, Mutton Juicy Mandi, Fish Tawa Chicken, Special Mixed Mandi",
-  "address": "100feet road, Jonnaguddi Area, Vizianagaram, Andhra Pradesh 535002",
-  "image": "90s_mandi_villa.jpeg",
-  "delivery": true
-},
-{
-  "name": "Sri Sai Gowrav Family Garden Restaurant & Dhaba",
-  "cuisines": "Mughlai, North Indian, Biryani & Dhaba",
-  "price_range": "₹200–400",
-  "price_for_two": 350,
-  "rating": 4.0,
-  "reviews": 749,
-  "famous_dishes": "Pot Biryani, Chicken Fry Biryani, Mughlai Chicken Biryani, Butter Naan, Kamju Pitta, Chicken Majestic",
-  "veg_dishes": "Paneer Butter Masala, Kaju Curry, Butter Naan, Veg Fried Rice, Dal Tadka",
-  "non_veg_dishes": "Pot Biryani, Mughlai Chicken Biryani, Chicken Fry Piece Biryani, Kamju Pitta Fry, Chicken Majestic, Tandoori Chicken",
-  "address": "4CQM+72Q, Near MIMS, Nellimarla Road, Vizianagaram, Andhra Pradesh 535002",
-  "image": "sri_sai_gowrav_dhaba.jpeg",
-  "delivery": true
-}
+    "name": "Blue Moon Restaurant",
+    "category": "restaurants",
+    "cuisines": "North Indian, Biryani, Chinese, Seafood",
+    "address": "Door 182/1 12-15-1, Nellimarla Village, Poolbagh Road, Vizianagaram Locality, Vizianagaram, Andhra Pradesh 535002",
+    "price_for_two": 600,
+    "rating": 4.1,
+    "reviews": 320,
+    "veg_dishes": "Paneer Butter Masala, Veg Fried Rice, Mushroom Masala, Baby Corn Manchurian, Dal Tadka",
+    "nonveg_dishes": "Special Chicken Biryani, Apollo Fish, Prawns Fry, Chicken 65, Mutton Curry",
+    "image": "bluemoon.jpeg",
+    "delivery": true
+  },
+  {
+    "name": "90s Mandi Villa",
+    "category": "restaurants",
+    "cuisines": "Arabian Mandi, Biryani, North Indian",
+    "price_range": "₹200–1,100",
+    "price_for_two": 600,
+    "rating": 4.0,
+    "reviews": 369,
+    "famous_dishes": "Chicken Juicy Mandi, Mutton Juicy Mandi, Fish Tawa, White Pasta, Paneer 65 Mandi",
+    "veg_dishes": "Paneer 65, Veg Mandi, White Pasta, Crispy Corn",
+    "non_veg_dishes": "Chicken Juicy Mandi, Mutton Juicy Mandi, Fish Tawa Chicken, Special Mixed Mandi",
+    "address": "100feet road, Jonnaguddi Area, Vizianagaram, Andhra Pradesh 535002",
+    "image": "90s_mandi_villa.jpeg",
+    "delivery": true
+  },
+  {
+    "name": "Sri Sai Gowrav Family Garden Restaurant & Dhaba",
+    "category": "restaurants",
+    "cuisines": "Mughlai, North Indian, Biryani & Dhaba",
+    "price_range": "₹200–400",
+    "price_for_two": 350,
+    "rating": 4.0,
+    "reviews": 749,
+    "famous_dishes": "Pot Biryani, Chicken Fry Biryani, Mughlai Chicken Biryani, Butter Naan, Kamju Pitta, Chicken Majestic",
+    "veg_dishes": "Paneer Butter Masala, Kaju Curry, Butter Naan, Veg Fried Rice, Dal Tadka",
+    "non_veg_dishes": "Pot Biryani, Mughlai Chicken Biryani, Chicken Fry Piece Biryani, Kamju Pitta Fry, Chicken Majestic, Tandoori Chicken",
+    "address": "4CQM+72Q, Near MIMS, Nellimarla Road, Vizianagaram, Andhra Pradesh 535002",
+    "image": "sri_sai_gowrav_dhaba.jpeg",
+    "delivery": true
+  }
 ]
