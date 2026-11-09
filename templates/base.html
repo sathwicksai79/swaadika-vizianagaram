@@ -6,6 +6,12 @@
   <meta name="google-site-verification" content="G3duZH-Dx3E-6tiByZL-z8xBfM0QY32x1m31UDWbltg" />
   <title>{% block title %}SWAADIKA — Find What Tastes Right{% endblock %}</title>
   <meta name="description" content="Discover food spots in Vizianagaram with Swaadika. Restaurant rating predictions using Machine Learning.">
+  
+  <!-- FAVICON & BRAND ICONS (using logo.jpeg) -->
+  <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/logo.jpeg') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.jpeg') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo.jpeg') }}">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -68,8 +74,8 @@
 
 <!-- TOP HEADER -->
 <header class="nav" style="background: #faf5ee; padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eadbc9;">
-  <a href="{{ url_for('home') }}" style="text-decoration: none; display: flex; align-items: center; gap: 8px; color: #4a0312;">
-    <span style="font-size: 22px;">👨‍🍳</span>
+  <a href="{{ url_for('home') }}" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: #4a0312;">
+    <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Swaadika Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
     <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 19px; font-weight: 800; letter-spacing: 0.08em; color: #3b050f;">
       SWAADIKA
     </span>
