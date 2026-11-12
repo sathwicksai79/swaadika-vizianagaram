@@ -108,7 +108,7 @@
       </div>
 
       <!-- PREDICTION SECTION (Hidden initially) -->
-      <div id="predictContent" hidden style="display: none; margin-top: 20px; background: #ffffff; border: 1px solid #e8e2d5; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,0.04);">
+      <div id="predictContent" hidden style="margin-top: 20px; background: #ffffff; border: 1px solid #e8e2d5; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,0.04);">
         <div style="font-size: 11px; font-weight: 700; color: #7d5d24; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;">
           Ratings &amp; Highlights
         </div>
@@ -150,7 +150,7 @@
 
   <!-- DYNAMIC DIGITAL MENU CARD (RESTAURANTS ONLY - Hidden until View Menu is clicked) -->
   {% if category_key == 'restaurants' %}
-  <div id="menuContent" hidden style="display: none; margin-top: 36px; background: #0c0d0e; border-radius: 24px; border: 1px solid #232528; padding: 28px 24px; color: #f1f5f9; box-shadow: 0 16px 40px rgba(0,0,0,0.45); max-width: 780px;">
+  <div id="menuContent" hidden style="margin-top: 36px; background: #0c0d0e; border-radius: 24px; border: 1px solid #232528; padding: 28px 24px; color: #f1f5f9; box-shadow: 0 16px 40px rgba(0,0,0,0.45); max-width: 780px;">
     
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <span style="font-size: 12px; color: #9ca3af; font-weight: 500;">Restaurant Menu</span>
@@ -227,6 +227,16 @@
 
 <!-- STYLES -->
 <style>
+#menuContent,
+#predictContent {
+  display: none !important;
+}
+
+#menuContent.is-open,
+#predictContent.is-open {
+  display: block !important;
+}
+
 .menu-item-row {
   background: #151619;
   border: 1px solid #24262b;
@@ -283,67 +293,52 @@ function toggleSection(section) {
   const predBtn = document.getElementById('tabPredictBtn');
 
   if (section === 'menu' && menuBox) {
-    const isClosed = menuBox.hasAttribute('hidden') || menuBox.style.display === 'none';
+    const willOpen = !menuBox.classList.contains('is-open');
+    menuBox.classList.toggle('is-open', willOpen);
+    menuBox.hidden = !willOpen;
 
-    if (isClosed) {
-      menuBox.removeAttribute('hidden');
-      menuBox.style.display = 'block';
-      if (menuBtn) {
-        menuBtn.setAttribute('aria-expanded', 'true');
-        menuBtn.style.background = '#0c3b2e';
-        menuBtn.style.color = '#ffffff';
-        menuBtn.innerHTML = 'Hide Menu <span aria-hidden="true">▴</span>';
-      }
-      if (predBox) {
-        predBox.setAttribute('hidden', '');
-        predBox.style.display = 'none';
-      }
-      if (predBtn) {
-        predBtn.setAttribute('aria-expanded', 'false');
-        predBtn.style.background = 'transparent';
-        predBtn.style.color = '#0c3b2e';
-      }
+    if (predBox) {
+      predBox.classList.remove('is-open');
+      predBox.hidden = true;
+    }
+    if (menuBtn) {
+      menuBtn.setAttribute('aria-expanded', String(willOpen));
+      menuBtn.style.background = willOpen ? '#0c3b2e' : 'transparent';
+      menuBtn.style.color = willOpen ? '#ffffff' : '#0c3b2e';
+      menuBtn.innerHTML = willOpen
+        ? 'Hide Menu <span aria-hidden="true">▴</span>'
+        : 'View Menu <span aria-hidden="true">▾</span>';
+    }
+    if (predBtn) {
+      predBtn.setAttribute('aria-expanded', 'false');
+      predBtn.style.background = 'transparent';
+      predBtn.style.color = '#0c3b2e';
+    }
+    if (willOpen) {
       menuBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      menuBox.setAttribute('hidden', '');
-      menuBox.style.display = 'none';
-      if (menuBtn) {
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.style.background = 'transparent';
-        menuBtn.style.color = '#0c3b2e';
-        menuBtn.innerHTML = 'View Menu <span aria-hidden="true">▾</span>';
-      }
     }
   } else if (section === 'predict' && predBox) {
-    const isClosed = predBox.hasAttribute('hidden') || predBox.style.display === 'none';
+    const willOpen = !predBox.classList.contains('is-open');
+    predBox.classList.toggle('is-open', willOpen);
+    predBox.hidden = !willOpen;
 
-    if (isClosed) {
-      predBox.removeAttribute('hidden');
-      predBox.style.display = 'block';
-      if (predBtn) {
-        predBtn.setAttribute('aria-expanded', 'true');
-        predBtn.style.background = '#0c3b2e';
-        predBtn.style.color = '#ffffff';
-      }
-      if (menuBox) {
-        menuBox.setAttribute('hidden', '');
-        menuBox.style.display = 'none';
-      }
-      if (menuBtn) {
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.style.background = 'transparent';
-        menuBtn.style.color = '#0c3b2e';
-        menuBtn.innerHTML = 'View Menu <span aria-hidden="true">▾</span>';
-      }
+    if (menuBox) {
+      menuBox.classList.remove('is-open');
+      menuBox.hidden = true;
+    }
+    if (predBtn) {
+      predBtn.setAttribute('aria-expanded', String(willOpen));
+      predBtn.style.background = willOpen ? '#0c3b2e' : 'transparent';
+      predBtn.style.color = willOpen ? '#ffffff' : '#0c3b2e';
+    }
+    if (menuBtn) {
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.style.background = 'transparent';
+      menuBtn.style.color = '#0c3b2e';
+      menuBtn.innerHTML = 'View Menu <span aria-hidden="true">▾</span>';
+    }
+    if (willOpen) {
       predBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-      predBox.setAttribute('hidden', '');
-      predBox.style.display = 'none';
-      if (predBtn) {
-        predBtn.setAttribute('aria-expanded', 'false');
-        predBtn.style.background = 'transparent';
-        predBtn.style.color = '#0c3b2e';
-      }
     }
   }
 }
