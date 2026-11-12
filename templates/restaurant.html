@@ -107,7 +107,7 @@
         </button>
       </div>
 
-      <!-- PREDICTION SECTION (Hidden initially) -->
+      <!-- PREDICTION SECTION (Hidden initially on all devices) -->
       <div id="predictContent" hidden style="margin-top: 20px; background: #ffffff; border: 1px solid #e8e2d5; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,0.04);">
         <div style="font-size: 11px; font-weight: 700; color: #7d5d24; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;">
           Ratings &amp; Highlights
@@ -227,14 +227,22 @@
 
 <!-- STYLES -->
 <style>
-#menuContent,
-#predictContent {
+/* High-specificity rules so mobile media queries in style.css cannot auto-open the menu */
+section.detail-hero #menuContent:not(.is-open),
+section.detail-hero #predictContent:not(.is-open) {
   display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-#menuContent.is-open,
-#predictContent.is-open {
+section.detail-hero #menuContent.is-open,
+section.detail-hero #predictContent.is-open {
   display: block !important;
+  visibility: visible !important;
+  height: auto !important;
 }
 
 .menu-item-row {
@@ -286,6 +294,19 @@
 
 <!-- SCRIPTS -->
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const menuBox = document.getElementById('menuContent');
+  const predBox = document.getElementById('predictContent');
+  if (menuBox) {
+    menuBox.classList.remove('is-open');
+    menuBox.hidden = true;
+  }
+  if (predBox) {
+    predBox.classList.remove('is-open');
+    predBox.hidden = true;
+  }
+});
+
 function toggleSection(section) {
   const menuBox = document.getElementById('menuContent');
   const predBox = document.getElementById('predictContent');
