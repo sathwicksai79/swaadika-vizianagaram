@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block title %}{{ restaurant.name }} · SWAADIKA{% endblock %}
 {% block content %}
-<section class="detail-hero" style="max-width: 1080px; margin: 32px auto 60px; padding: 0 20px;">
-  <a class="back-link" href="{{ url_for('category_listing', category=category_key) }}" style="color: #64748b; font-weight: 600; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 6px;">
+<section class="detail-hero">
+  <a class="back-link" href="{{ url_for('category_listing', category=category_key) }}">
     ← Back to {{ category.label }}
   </a>
   
-  <div class="detail-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 20px; align-items: start;">
+  <div class="detail-layout">
     
     <!-- LEFT: Photo -->
-    <div class="detail-photo" style="border-radius: 20px; overflow: hidden; background: #073b30; height: 380px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+    <div class="detail-photo" style="background: #073b30;">
       {% if restaurant.image %}
-      <img src="{{ url_for('static', filename='images/' + restaurant.image) }}" alt="{{ restaurant.name }}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/restaurants/' + restaurant.image) }}';">
+      <img src="{{ url_for('static', filename='images/' + restaurant.image) }}" alt="{{ restaurant.name }}" onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/restaurants/' + restaurant.image) }}';">
       {% else %}
       <div class="image-fallback category-fallback {{ category.tone }}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 44px; color: #f6c860;">
         <span>{{ category.symbol }}</span>
@@ -21,15 +21,13 @@
 
     <!-- RIGHT: Info & Actions -->
     <div class="detail-info">
-      <div class="eyebrow dark" style="font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: #8a6a2a; text-transform: uppercase;">
+      <div class="eyebrow dark">
         {{ category.eyebrow or 'DINING & MULTI-CUISINE' }}
       </div>
       
-      <h1 style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.6rem; color: #0b4a3f; margin: 6px 0 10px 0; font-weight: 700;">
-        {{ restaurant.name }}
-      </h1>
+      <h1>{{ restaurant.name }}</h1>
       
-      <p class="cuisines" style="font-size: 14.5px; color: #64748b; margin: 0 0 16px 0;">
+      <p class="cuisines">
         {{ restaurant.cuisines or 'Multi-cuisine' }}
       </p>
 
@@ -37,12 +35,12 @@
       {% if restaurant.address %}
       <div class="directions-card" style="margin: 14px 0 20px 0; background: #fdfbf7; border: 1.5px solid #e6ded0; border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
         <div style="flex: 1; min-width: 220px;">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-            <span style="font-size: 11px; font-weight: 700; color: #8a6a2a; text-transform: uppercase; letter-spacing: 0.05em;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
+            <span style="font-size: 11px; font-weight: 700; color: #7d5d24; text-transform: uppercase; letter-spacing: 0.05em;">
               Location &amp; Distance
             </span>
             <span id="distanceBadge" style="font-size: 12px; font-weight: 600; color: #0b4a3f; background: #e0f2fe; padding: 2px 8px; border-radius: 12px;">
-              📍 Ready for route
+              Ready for route
             </span>
           </div>
           <div style="color: #1e293b; font-size: 13.5px; font-weight: 500; line-height: 1.4;">
@@ -56,7 +54,7 @@
            rel="noopener noreferrer" 
            class="secondary-btn"
            aria-label="Start Google Maps navigation to {{ restaurant.name }}"
-           style="background: #0c3b2e; color: #ffffff; border: 0; font-size: 0.9rem;">
+           style="background: #0c3b2e; color: #ffffff; border: 0; font-size: 0.9rem; margin-top: 0;">
           Start Navigation <span aria-hidden="true">↗</span>
         </a>
       </div>
@@ -73,53 +71,65 @@
             ₹500–700 for two
           {% endif %}
         </strong>
-        <span style="font-size: 11.5px; font-weight: 700; color: #8a6a2a; text-transform: uppercase; letter-spacing: 0.06em;">
+        <span style="font-size: 11.5px; font-weight: 700; color: #7d5d24; text-transform: uppercase; letter-spacing: 0.06em;">
           Price information
         </span>
       </div>
 
       {% if restaurant.delivery is defined and restaurant.delivery is not none %}
-      <p class="delivery-note" style="margin: 10px 0 20px; font-weight: 600; color: #0b4a3f;">
+      <p class="delivery-note">
         Delivery: {{ 'Available' if restaurant.delivery else 'Not available' }}
       </p>
       {% endif %}
 
-      <!-- ACTION BUTTONS: View Menu shows ONLY if this is a restaurant -->
+      <!-- ACTION BUTTONS: Single Icon Each + WCAG Accessible -->
       <div class="explore-tabs" style="display: flex; gap: 14px; margin-top: 20px; border-bottom: 2px solid #e5e0d3; padding-bottom: 16px; flex-wrap: wrap;">
         {% if category_key == 'restaurants' %}
-        <button type="button" id="tabMenuBtn" onclick="toggleSection('menu')" class="action-tab-btn" style="cursor: pointer; border: 1.5px solid #0b4a3f; background: transparent; color: #0b4a3f; padding: 10px 22px; border-radius: 24px; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
-          🍽 View Menu
+        <button type="button"
+                id="tabMenuBtn"
+                aria-expanded="false"
+                aria-controls="menuContent"
+                onclick="toggleSection('menu')"
+                class="action-tab-btn secondary-btn"
+                style="margin-top: 0;">
+          View Menu <span aria-hidden="true">▾</span>
         </button>
         {% endif %}
 
-        <button type="button" id="tabPredictBtn" onclick="toggleSection('predict')" class="action-tab-btn" style="cursor: pointer; border: 1.5px solid #0b4a3f; background: transparent; color: #0b4a3f; padding: 10px 22px; border-radius: 24px; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
-          🔮 Predict Rating <span>→</span>
+        <button type="button"
+                id="tabPredictBtn"
+                aria-expanded="false"
+                aria-controls="predictContent"
+                onclick="toggleSection('predict')"
+                class="action-tab-btn secondary-btn"
+                style="margin-top: 0;">
+          Predict Rating <span aria-hidden="true">→</span>
         </button>
       </div>
 
       <!-- PREDICTION SECTION (Hidden initially) -->
-      <div id="predictContent" style="display: none; margin-top: 20px; background: #ffffff; border: 1px solid #e8e2d5; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,0.04);">
-        <div style="font-size: 11px; font-weight: 700; color: #8f5f1e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;">
+      <div id="predictContent" hidden style="display: none; margin-top: 20px; background: #ffffff; border: 1px solid #e8e2d5; border-radius: 16px; padding: 22px; box-shadow: 0 4px 18px rgba(0,0,0,0.04);">
+        <div style="font-size: 11px; font-weight: 700; color: #7d5d24; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;">
           Ratings &amp; Highlights
         </div>
         <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap;">
           <div>
-            <span style="font-size: 12px; color: #777; display: block;">User Rating</span>
+            <span style="font-size: 12px; color: #4e5953; display: block;">User Rating</span>
             <strong style="font-size: 22px; color: #1e293b;">★ {{ restaurant.rating or '4.5' }}</strong>
             {% if restaurant.reviews %}
-            <span style="font-size: 11px; color: #94a3b8; display: block;">({{ restaurant.reviews }} reviews)</span>
+            <span style="font-size: 11px; color: #4e5953; display: block;">({{ restaurant.reviews }} reviews)</span>
             {% endif %}
           </div>
 
           <div style="border-left: 1px solid #eee; padding-left: 20px;">
-            <span style="font-size: 12px; color: #777; display: block;">Swaadika Prediction</span>
-            <strong id="predRatingVal" style="font-size: 22px; color: #2e7d32;">
+            <span style="font-size: 12px; color: #4e5953; display: block;">Swaadika Prediction</span>
+            <strong id="predRatingVal" style="font-size: 22px; color: #166534;">
               ★ {{ auto_prediction if auto_prediction else (restaurant.rating or '4.56') }}
             </strong>
           </div>
 
           <div style="border-left: 1px solid #eee; padding-left: 20px; flex: 1; min-width: 220px;">
-            <span style="font-size: 12px; color: #777; display: block; margin-bottom: 4px;">Try These If Possible</span>
+            <span style="font-size: 12px; color: #4e5953; display: block; margin-bottom: 4px;">Try These If Possible</span>
             <div style="font-size: 13.5px; color: #222; display: flex; flex-direction: column; gap: 6px;">
               {% if restaurant.veg_dishes %}
                 <div><strong style="color: #166534;">Veg:</strong> {{ restaurant.veg_dishes }}</div>
@@ -138,9 +148,9 @@
     </div>
   </div>
 
-  <!-- DYNAMIC DIGITAL MENU CARD (RESTAURANTS ONLY) -->
+  <!-- DYNAMIC DIGITAL MENU CARD (RESTAURANTS ONLY - Hidden until View Menu is clicked) -->
   {% if category_key == 'restaurants' %}
-  <div id="menuContent" style="display: none; margin-top: 40px; background: #0c0d0e; border-radius: 24px; border: 1px solid #232528; padding: 28px 24px; color: #f1f5f9; box-shadow: 0 16px 40px rgba(0,0,0,0.45); max-width: 780px;">
+  <div id="menuContent" hidden style="display: none; margin-top: 36px; background: #0c0d0e; border-radius: 24px; border: 1px solid #232528; padding: 28px 24px; color: #f1f5f9; box-shadow: 0 16px 40px rgba(0,0,0,0.45); max-width: 780px;">
     
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <span style="font-size: 12px; color: #9ca3af; font-weight: 500;">Restaurant Menu</span>
@@ -153,13 +163,14 @@
       <h3 style="font-size: 1.5rem; font-weight: 700; color: #ffffff; margin: 0; font-family: 'DM Sans', sans-serif;">
         Food &amp; Beverages
       </h3>
-      <span style="font-size: 22px; color: #e5e7eb;">🍴</span>
+      <span aria-hidden="true" style="font-size: 22px; color: #e5e7eb;">🍴</span>
     </div>
 
     <!-- Quick Search inside Menu -->
     <div style="margin-bottom: 16px; position: relative;">
+      <label for="menuItemSearch" class="sr-only" style="position: absolute; width: 1px; height: 1px; overflow: hidden;">Search dishes in menu</label>
       <input type="text" id="menuItemSearch" placeholder="Search dishes in menu..." 
-             style="width: 100%; padding: 10px 16px; border-radius: 12px; border: 1px solid #2d3036; background: #16171a; color: #ffffff; font-size: 13.5px; outline: none; box-sizing: border-box;"
+             style="width: 100%; padding: 10px 16px; border-radius: 12px; border: 1px solid #2d3036; background: #16171a; color: #ffffff; font-size: 13.5px; box-sizing: border-box;"
              oninput="searchMenuItems()">
     </div>
 
@@ -175,13 +186,12 @@
         {% endfor %}
       {% endif %}
 
-      <button type="button" class="menu-pill" onclick="filterMenu('veg', this)" style="background: #18191c; color: #4ade80; border: 1px solid #2d3036; padding: 7px 16px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;">🟢 Veg</button>
-      <button type="button" class="menu-pill" onclick="filterMenu('non-veg', this)" style="background: #18191c; color: #f87171; border: 1px solid #2d3036; padding: 7px 16px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;">🔴 Non-Veg</button>
+      <button type="button" class="menu-pill" onclick="filterMenu('veg', this)" style="background: #18191c; color: #4ade80; border: 1px solid #2d3036; padding: 7px 16px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;">Veg</button>
+      <button type="button" class="menu-pill" onclick="filterMenu('non-veg', this)" style="background: #18191c; color: #f87171; border: 1px solid #2d3036; padding: 7px 16px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;">Non-Veg</button>
     </div>
 
-    <!-- Dynamic Dish List from Server or Fallback -->
+    <!-- Dynamic Dish List -->
     <div id="menuItemsContainer" style="display: flex; flex-direction: column; gap: 11px; max-height: 580px; overflow-y: auto; padding-right: 6px;">
-      
       {% if menu_data %}
         {% for cat_title, items in menu_data.items() %}
           {% for item in items %}
@@ -200,14 +210,12 @@
           {% endfor %}
         {% endfor %}
       {% else %}
-        <!-- In case menu_data isn't passed via app.py, default to the full combined menu list -->
         <p style="color: #94a3b8; font-size: 13px; text-align: center; padding: 20px 0;">Official digital menu is loaded directly from dataset.</p>
       {% endif %}
-
     </div>
 
     <div style="margin-top: 18px; text-align: center; border-top: 1px solid #1f2125; padding-top: 14px;">
-      <span style="font-size: 11.5px; color: #6b7280; font-style: italic;">
+      <span style="font-size: 11.5px; color: #9ca3af; font-style: italic;">
         Prices are subject to seasonal menu updates at {{ restaurant.name }}.
       </span>
     </div>
@@ -275,36 +283,67 @@ function toggleSection(section) {
   const predBtn = document.getElementById('tabPredictBtn');
 
   if (section === 'menu' && menuBox) {
-    const isOpened = menuBox.style.display === 'block';
-    menuBox.style.display = isOpened ? 'none' : 'block';
-    if (predBox) predBox.style.display = 'none';
+    const isClosed = menuBox.hasAttribute('hidden') || menuBox.style.display === 'none';
 
-    if (menuBtn) {
-      menuBtn.style.background = isOpened ? 'transparent' : '#0b4a3f';
-      menuBtn.style.color = isOpened ? '#0b4a3f' : '#ffffff';
-    }
-    if (predBtn) {
-      predBtn.style.background = 'transparent';
-      predBtn.style.color = '#0b4a3f';
-    }
-    if (!isOpened) {
+    if (isClosed) {
+      menuBox.removeAttribute('hidden');
+      menuBox.style.display = 'block';
+      if (menuBtn) {
+        menuBtn.setAttribute('aria-expanded', 'true');
+        menuBtn.style.background = '#0c3b2e';
+        menuBtn.style.color = '#ffffff';
+        menuBtn.innerHTML = 'Hide Menu <span aria-hidden="true">▴</span>';
+      }
+      if (predBox) {
+        predBox.setAttribute('hidden', '');
+        predBox.style.display = 'none';
+      }
+      if (predBtn) {
+        predBtn.setAttribute('aria-expanded', 'false');
+        predBtn.style.background = 'transparent';
+        predBtn.style.color = '#0c3b2e';
+      }
       menuBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      menuBox.setAttribute('hidden', '');
+      menuBox.style.display = 'none';
+      if (menuBtn) {
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.style.background = 'transparent';
+        menuBtn.style.color = '#0c3b2e';
+        menuBtn.innerHTML = 'View Menu <span aria-hidden="true">▾</span>';
+      }
     }
-  } else if (section === 'predict') {
-    const isOpened = predBox.style.display === 'block';
-    predBox.style.display = isOpened ? 'none' : 'block';
-    if (menuBox) menuBox.style.display = 'none';
+  } else if (section === 'predict' && predBox) {
+    const isClosed = predBox.hasAttribute('hidden') || predBox.style.display === 'none';
 
-    if (predBtn) {
-      predBtn.style.background = isOpened ? 'transparent' : '#0b4a3f';
-      predBtn.style.color = isOpened ? '#0b4a3f' : '#ffffff';
-    }
-    if (menuBtn) {
-      menuBtn.style.background = 'transparent';
-      menuBtn.style.color = '#0b4a3f';
-    }
-    if (!isOpened) {
+    if (isClosed) {
+      predBox.removeAttribute('hidden');
+      predBox.style.display = 'block';
+      if (predBtn) {
+        predBtn.setAttribute('aria-expanded', 'true');
+        predBtn.style.background = '#0c3b2e';
+        predBtn.style.color = '#ffffff';
+      }
+      if (menuBox) {
+        menuBox.setAttribute('hidden', '');
+        menuBox.style.display = 'none';
+      }
+      if (menuBtn) {
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.style.background = 'transparent';
+        menuBtn.style.color = '#0c3b2e';
+        menuBtn.innerHTML = 'View Menu <span aria-hidden="true">▾</span>';
+      }
       predBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      predBox.setAttribute('hidden', '');
+      predBox.style.display = 'none';
+      if (predBtn) {
+        predBtn.setAttribute('aria-expanded', 'false');
+        predBtn.style.background = 'transparent';
+        predBtn.style.color = '#0c3b2e';
+      }
     }
   }
 }
@@ -347,11 +386,7 @@ function applyCombinedFilters() {
 
     const matchesSearch = !searchQuery || title.includes(searchQuery) || desc.includes(searchQuery);
 
-    if (matchesCategory && matchesSearch) {
-      row.style.display = 'flex';
-    } else {
-      row.style.display = 'none';
-    }
+    row.style.display = (matchesCategory && matchesSearch) ? 'flex' : 'none';
   });
 }
 </script>
