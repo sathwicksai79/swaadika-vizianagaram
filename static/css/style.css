@@ -1337,7 +1337,8 @@ select:focus-visible {
     gap: 28px;
   }
   .detail-photo {
-    height: 380px;
+    width: 100% !important;
+    height: 360px;
   }
   .section-top {
     align-items: stretch;
@@ -1369,7 +1370,7 @@ select:focus-visible {
   }
 }
 
-/* Mobile Media Queries (Logos, Buttons, Zero Horizontal Overflow) */
+/* Mobile Media Queries (Logos, Buttons, Full-Width Photos, Zero Horizontal Overflow) */
 @media (max-width: 600px) {
   .nav {
     padding: 12px 5vw;
@@ -1421,8 +1422,19 @@ select:focus-visible {
   .detail-hero {
     padding: 35px 5vw 55px;
   }
+  /* Stack detail photo above title on mobile so it displays full-width instead of a narrow strip */
+  .detail-layout,
+  .detail-hero > div {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 20px !important;
+  }
   .detail-photo {
-    height: 280px;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 240px !important;
+    flex: none !important;
   }
   .detail-info h1 {
     font-size: 2.5rem;
